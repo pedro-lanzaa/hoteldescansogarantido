@@ -42,6 +42,7 @@ typedef struct {
     float valorDiaria;
 } Estadia;
 
+// Arrays para armazenar clientes, funcionários e estadias
 Cliente clientes[100];
 Funcionario funcionarios[100];
 Estadia estadias[100];
@@ -64,47 +65,60 @@ void pesquisarFuncionario();
 void mostrarEstadiasCliente();
 void pesquisarQuarto();
 
+// Função para limpar a tela
 void limpaTela() {
     system("cls || clear");
 }
 
+// Função para pausar a tela
 void pausaTela() {
     printf("\nPressione Enter para continuar...");
     getchar();
 }
 
+// Função para validar a data
 int validarData(int dia, int mes, int ano) {
     if (dia < 1 || dia > 31 || mes < 1 || mes > 12 || ano < 2024) {
-        return 0;
+        return 0; 
     }
-    if (mes == 4 || mes == 6 || mes == 9 || mes == 11) {
+
+    // Verificar meses com 30 dias (pares e ímpares)
+    if ((mes == 4 || mes == 6 || mes == 9 || mes == 11) || 
+        (mes == 2 && ((ano % 4 == 0 && ano % 100 != 0) || (ano % 400 == 0)))) {
         if (dia > 30) return 0;
-    }
-    if (mes == 2) {
+    } else if (mes == 2) { // Verificação do mês de fevereiro
         if ((ano % 4 == 0 && ano % 100 != 0) || (ano % 400 == 0)) {
-            if (dia > 29) return 0;
+            if (dia > 29) return 0; 
         } else {
-            if (dia > 28) return 0;
+            if (dia > 28) return 0; 
         }
     }
+
     return 1;
 }
 
+// Função para calcular o tempo entre duas datas
 int calcularDiferencaDias(struct tm dataEntrada, struct tm dataSaida) {
-    dataEntrada.tm_hour = 0;
-    dataEntrada.tm_min = 0;
-    dataEntrada.tm_sec = 0;
-    dataSaida.tm_hour = 0;
-    dataSaida.tm_min = 0;
-    dataSaida.tm_sec = 0;
-
+    // Converta as datas para time_t
     time_t entrada = mktime(&dataEntrada);
     time_t saida = mktime(&dataSaida);
 
-    double diferenca = difftime(saida, entrada) / (60 * 60 * 24);
-    return (int)diferenca + 1;
+    // Calcule a diferença em segundos
+    double diferencaSegundos = difftime(saida, entrada);
+
+    // Divida a diferença em segundos pelo número de segundos em um dia
+    // e arredonde para o inteiro mais próximo
+    int dias = (int) (diferencaSegundos / (60 * 60 * 24) + 0.5);
+
+    // Garanta que a diferença seja pelo menos 1 dia
+    if (dias < 1) {
+        dias = 1;
+    }
+
+    return dias;
 }
 
+// Função para contar quantos quartos estão disponíveis
 int contarQuartosDisponiveis(struct tm dataEntrada, struct tm dataSaida) {
     int contagem = 0;
     for (int i = 0; i < numEstadias; i++) {
@@ -115,19 +129,22 @@ int contarQuartosDisponiveis(struct tm dataEntrada, struct tm dataSaida) {
     return contagem;
 }
 
+// Função para cadastrar um cliente
 void cadastrarCliente() {
     limpaTela();
     Cliente novoCliente;
-    printf("Digite o Nome e o Sobrenome: ");
+    printf("Digite o Nome: ");
     fgets(novoCliente.nome, sizeof(novoCliente.nome), stdin);
     strtok(novoCliente.nome, "\n");
 
+    // Validação do CEP
     int cepValido = 0;
     while (!cepValido) {
         printf("Digite o CEP (8 dígitos): ");
         fgets(novoCliente.endereco, sizeof(novoCliente.endereco), stdin);
         strtok(novoCliente.endereco, "\n");
 
+        // Checar se o CEP tem o formato correto
         if (strlen(novoCliente.endereco) == 8) {
             cepValido = 1;
         } else {
@@ -135,12 +152,14 @@ void cadastrarCliente() {
         }
     }
 
+    // Validação do telefone
     int telefoneValido = 0;
     while (!telefoneValido) {
         printf("Digite o Telefone com ddd: ");
         fgets(novoCliente.telefone, sizeof(novoCliente.telefone), stdin);
         strtok(novoCliente.telefone, "\n");
 
+        // Checar se o telefone tem o formato correto
         if (strlen(novoCliente.telefone) >= 9 && strlen(novoCliente.telefone) <= 12) {
             telefoneValido = 1;
         } else {
@@ -148,7 +167,7 @@ void cadastrarCliente() {
         }
     }
 
-    sprintf(novoCliente.id, "C%d", numClientes + 1);
+    sprintf(novoCliente.id, "C%d", numClientes + 1);  // Gera um ID único para o cliente
     clientes[numClientes++] = novoCliente;
     limpaTela();
     printf("Cadastrado com sucesso!\n");
@@ -162,6 +181,7 @@ void cadastrarCliente() {
     }
 }
 
+// Função para cadastrar um funcionário
 void cadastrarFuncionario(int cargo) {
     limpaTela();
     Funcionario novoFuncionario;
@@ -169,12 +189,14 @@ void cadastrarFuncionario(int cargo) {
     fgets(novoFuncionario.nome, sizeof(novoFuncionario.nome), stdin);
     strtok(novoFuncionario.nome, "\n");
 
+    // Validação do telefone
     int telefoneValido = 0;
     while (!telefoneValido) {
         printf("Digite o Telefone com o ddd: ");
         fgets(novoFuncionario.telefone, sizeof(novoFuncionario.telefone), stdin);
         strtok(novoFuncionario.telefone, "\n");
 
+        // Checar se o telefone tem o formato correto
         if (strlen(novoFuncionario.telefone) >= 9 && strlen(novoFuncionario.telefone) <= 12) {
             telefoneValido = 1;
         } else {
@@ -182,8 +204,9 @@ void cadastrarFuncionario(int cargo) {
         }
     }
 
-    sprintf(novoFuncionario.id, "F%d", numFuncionarios + 1);
+    sprintf(novoFuncionario.id, "F%d", numFuncionarios + 1);  // Gera um ID único para o funcionário
 
+    // Define o salário com base no cargo
     switch (cargo) {
         case 1:
             novoFuncionario.salario = 1600.40;
@@ -208,6 +231,7 @@ void cadastrarFuncionario(int cargo) {
     pausaTela();
 }
 
+// Função para calcular o valor da diária com base no número de hóspedes
 float calcularValorDiaria(int numHospedes) {
     switch (numHospedes) {
         case 1: return 260.0;
@@ -220,11 +244,12 @@ float calcularValorDiaria(int numHospedes) {
     }
 }
 
+// Função para cadastrar uma estadia
 void cadastrarEstadia(char clienteId[]) {
     limpaTela();
     Estadia novaEstadia;
     strcpy(novaEstadia.clienteId, clienteId);
-    
+
     do {
         printf("Digite o número de hóspedes (máx 6): ");
         scanf("%d", &novaEstadia.numHospedes);
@@ -294,6 +319,7 @@ void cadastrarEstadia(char clienteId[]) {
     pausaTela();
 }
 
+// Função para dar baixa em uma estadia
 void darBaixaEstadia() {
     limpaTela();
     char clienteId[10];
@@ -315,6 +341,7 @@ void darBaixaEstadia() {
     pausaTela();
 }
 
+// Função para pesquisar um cliente pelo nome ou ID
 void pesquisarCliente() {
     limpaTela();
     char busca[50];
@@ -347,6 +374,7 @@ void pesquisarCliente() {
     pausaTela();
 }
 
+// Função para pesquisar um funcionário pelo nome ou ID
 void pesquisarFuncionario() {
     limpaTela();
     char busca[50];
@@ -367,6 +395,7 @@ void pesquisarFuncionario() {
     pausaTela();
 }
 
+// Função para mostrar todas as estadias de um cliente
 void mostrarEstadiasCliente() {
     limpaTela();
     char clienteId[10];
@@ -392,6 +421,7 @@ void mostrarEstadiasCliente() {
     pausaTela();
 }
 
+// Função para pesquisar um quarto pelo ID
 void pesquisarQuarto() {
     limpaTela();
     char quartoId[10];
@@ -417,6 +447,7 @@ void pesquisarQuarto() {
     pausaTela();
 }
 
+// Função principal
 int main() {
     char opcao;
     while (1) {
