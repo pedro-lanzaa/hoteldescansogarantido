@@ -5,7 +5,8 @@
 
 ## Autores
 - Pedro Lanza
-- Vitor Lucas
+- André Bianchini
+- Eduardo Assumpção 
 
 ## Projeto
 Projeto AEDS e FES
