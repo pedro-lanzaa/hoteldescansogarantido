@@ -89,3 +89,11 @@ void cadastrarCliente() {
     // Validação do telefone e CEP
     // Geração de ID único
 }
+
+Conclusão
+O Hotel Descanso Garantido é uma solução robusta e confiável para atender às demandas de pequenos e médios hotéis. Ele elimina erros manuais e traz eficiência para a gestão hoteleira. Testado e desenvolvido com práticas modernas, é uma ferramenta pronta para uso.
+
+Desenvolvedores
+Pedro Lanza
+Eduardo Spinelli
+André Bianchini
