@@ -1,5 +1,12 @@
 # Hotel Descanso Garantido
 
+## Desenvolvedores
+- **Pedro Lanza**  
+- **Eduardo Spinelli**  
+- **André Bianchini**  
+
+---
+
 ## Sobre o Projeto
 
 O **Hotel Descanso Garantido** é um sistema informatizado desenvolvido em linguagem C, voltado para a gestão de pequenos e médios hotéis. Ele foi projetado com base em boas práticas de engenharia de software e visa oferecer eficiência e simplicidade na administração de hotéis, eliminando problemas comuns como reservas duplicadas e inconsistências em registros.
@@ -60,9 +67,10 @@ O **Hotel Descanso Garantido** é um sistema informatizado desenvolvido em lingu
 
 ## Links Importantes
 
-- **Repositório no GitHub**: https://github.com/pedro-lanzaa/hoteldescansogarantido  
-- **Repositório no Replit**: https://replit.com/@pedro-lanza/HotelDescansoGarantido#main.c  
-- **Vídeo de apresentação no YouTube**: https://www.youtube.com/watch?v=4kH1ARzC8NU  
+| Repositório no GitHub               | https://github.com/pedro-lanzaa/hoteldescansogarantido                  |
+|-------------------------------------|---------------------------------------------------------------------------|
+| Repositório no Replit               | https://replit.com/@pedro-lanza/HotelDescansoGarantido#main.c            |
+| Vídeo de apresentação no YouTube    | https://www.youtube.com/watch?v=4kH1ARzC8NU                              |
 
 ---
 
@@ -89,4 +97,3 @@ void cadastrarCliente() {
     // Validação do telefone e CEP
     // Geração de ID único
 }
-
